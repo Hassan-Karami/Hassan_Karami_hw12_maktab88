@@ -1,4 +1,3 @@
-const { log } = require("console");
 const fs= require("fs");
 const { resolve } = require("path");
 let directory="./user-data.json";
@@ -21,22 +20,7 @@ const writeFilePromise = (filePath,data,options)=>{
     })
 }
 
-// writeFilePromise("./test.txt","HAssan from writeFilePromise","utf-8").then(()=>{
-//     console.log("successfully wrote");
-// }).catch((err)=>{
-//     console.log("This is my Error--->",err);
-// }
-    
-// )
 
-// readFilePromise("./user-data.json","utf-8").then((data)=>{
-//     console.log(data);
-//     // console.log(Object.keys(data[0]));
-// }).catch((error)=>{
-//     console.log(error);
-// });
-
-// {uid, firstname, lastname, city, postalCode, phoneNumber, position}
 let testUser={
     "uid": 123456789,
     "firstname": "Hassan",
@@ -55,22 +39,17 @@ const template = [
   "phoneNumber",
   "position",
 ];
-// console.log(JSON.stringify(testUser));
-
-// const deletePromise= (id)=>{
-//     readFilePromise("./user-data.json","utf-8").then((data)=>{
-//         let targetUser= data.filter((user) => user.uid === id);
-//         return targetUser;
-//     }     
-//     )
-// }
 
 
-// const writeFilePromise=()=>{
-//     return new Promise((resolve,reject)=>{
-//         fs.writeFile
-//     })
+//(R) Read
+readFilePromise("./user-data.json","utf-8").then((data)=>{
+    console.log(data);
 
+}).catch((error)=>{
+    console.log(error);
+});
+
+//(D) Delete
 const deleteUser= (id)=>{
     readFilePromise(directory,"utf-8").then((data)=>{
         let restOfUsers= data.filter(user=>user.uid !== id);
@@ -79,7 +58,7 @@ const deleteUser= (id)=>{
             console.log(`user with ID Number of ${id} deleted successfully`);
           })
           .catch((err) => {
-            return console.log("id is not valid", err);
+            return console.log(err);
           });
     }
         
@@ -87,6 +66,7 @@ const deleteUser= (id)=>{
     
 }
 
+//(C) Create
 const createUser= (newUser)=>{
     readFilePromise(directory,"utf-8").then((data)=>{
         let duplicate= data.find((user)=>user.uid=== newUser.uid);
@@ -105,7 +85,7 @@ const createUser= (newUser)=>{
 
 }
 
-
+//(U) Update
 const updateUser = (id,newUser)=>{
     if(typeof id !== "number") return console.log("id must be a number");
     if(Array.isArray(newUser)===true || typeof(newUser) !== "object" ) return console.log("your data must be into an object");
@@ -123,10 +103,9 @@ const updateUser = (id,newUser)=>{
       Object.assign(targetUser,newUser);
       return writeFilePromise(directory,JSON.stringify(data),"utf-8")
     }).then(x=>console.log("successfully updated"));
-
-    
-    
-   
 }
 
-updateUser(334455,{firstname:"Zohre",lastname:"Karami"});
+
+
+
+
