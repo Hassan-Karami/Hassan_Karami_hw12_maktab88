@@ -1,3 +1,5 @@
+//Here is first of changes
+
 const fs= require("fs");
 const { resolve } = require("path");
 let directory="./user-data.json";
@@ -15,14 +17,14 @@ const writeFilePromise = (filePath,data,options)=>{
     return new Promise((resolve,reject)=>{
         fs.writeFile(filePath,data,options,(err)=>{
             if(err) reject(err);
-             else resolve(data);
+             else resolve();
         })
     })
 }
 
 
 let testUser={
-    "uid": 123456789,
+    "uid": 123456,
     "firstname": "Hassan",
     "lastname": "Karami",
     "city": "Karaj",
@@ -42,19 +44,22 @@ const template = [
 
 
 //(R) Read
-readFilePromise("./user-data.json","utf-8").then((data)=>{
-    console.log(data);
+// readFilePromise("./user-data.json","utf-8").then((data)=>{
+//     console.log(data);
 
-}).catch((error)=>{
-    console.log(error);
-});
+// }).catch((error)=>{
+//     console.log(error);
+// });
 
 //(D) Delete
 const deleteUser= (id)=>{
     readFilePromise(directory,"utf-8").then((data)=>{
-        let restOfUsers= data.filter(user=>user.uid !== id);
+        let pointedUser = data.find((user) => user.uid === id);
+        if(!pointedUser) return console.log("oops! user id doesn't exist");
+        let restOfUsers= data.filter((user)=> user.uid !== id);
+        console.log(restOfUsers);
         return writeFilePromise(directory, JSON.stringify(restOfUsers), "utf-8")
-          .then((data) => {
+          .then(() => {
             console.log(`user with ID Number of ${id} deleted successfully`);
           })
           .catch((err) => {
@@ -75,7 +80,7 @@ const createUser= (newUser)=>{
         }
         let newData= [...data,newUser];
         return writeFilePromise(directory,JSON.stringify(newData),"utf-8");
-    }).then((data)=>{
+    }).then(()=>{
         console.log(`user with id ${newUser.uid} added successfully`)
     }).catch((err)=>{
         console.log(err);
@@ -94,18 +99,20 @@ const updateUser = (id,newUser)=>{
       let values= Object.values(newUser);
       if(values.some(value=>value.trim()==="")) return console.log("value of property must not be empty");
 
-     readFilePromise(directory, "utf-8").then((data) => {
-      let targetUser = data.find((user) => user.uid === id);
-      if (!targetUser) {
-        throw new Error(`user with this id doesn't exist`);
-      }
-      if(keys.find(property=> !template.includes(property)))  throw new Error(`property is not valid`);
-      Object.assign(targetUser,newUser);
-      return writeFilePromise(directory,JSON.stringify(data),"utf-8")
-    }).then(x=>console.log("successfully updated"));
+     readFilePromise(directory, "utf-8")
+       .then((data) => {
+         let targetUser = data.find((user) => user.uid === id);
+         if (!targetUser) {
+           throw new Error(`user with this id doesn't exist`);
+         }
+         if (keys.find((property) => !template.includes(property)))
+           throw new Error(`property is not valid`);
+         Object.assign(targetUser, newUser);
+         return writeFilePromise(directory, JSON.stringify(data), "utf-8");
+       })
+       .then(() => console.log(`user updated successfully `))
+       .catch((err) => console.log(err));
 }
 
 
-
-
-
+createUser(testUser);
