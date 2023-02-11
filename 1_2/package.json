@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "libreoffice-convert": "^1.4.1"
+    "docx-pdf": "^0.0.1"
   }
 }
