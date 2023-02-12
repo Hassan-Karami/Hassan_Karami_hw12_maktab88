@@ -14,7 +14,7 @@ async function mailer(recieverEmail) {
       let testAccount = await nodemailer.createTestAccount();
       
       // nodemailer configuration
-      let transporter = await nodemailer.createTransport({
+      let transporter =  nodemailer.createTransport({
 
         host: "smtp.ethereal.email",
         port: 587,

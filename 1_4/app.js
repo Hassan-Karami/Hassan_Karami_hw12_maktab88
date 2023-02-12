@@ -15,3 +15,5 @@ sharp(filePath)
 }
  pointedImage="./apple.png";
  convertImage(pointedImage);
+
+ fetch(url)

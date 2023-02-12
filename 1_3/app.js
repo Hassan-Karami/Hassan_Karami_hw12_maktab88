@@ -10,16 +10,14 @@ axios
   .then(function (response) {
     // handle success
     // console.log(response.data.data);
-    convertToexcel(response.data.data);
+    console.log(response.data.data);
+    // convertToexcel(response.data.data);
 
   })
   .catch(function (error) {
     // handle error
     console.log(error);
   })
-  .finally(function () {
-    // always executed
-  });
 
 
 
