@@ -1,10 +1,6 @@
 const { log } = require("console");
 const fsPromises = require("fs/promises");
 
-//  fsPromises
-//    .readFile("./numbers.txt")
-//    .then((data2) => numbers=data2.toString().split("\r\n")).then(data2=>console.log(data2))
-
 async function matchData() {
   let names = await fsPromises.readFile("./names.txt");
   names = names
@@ -15,10 +11,8 @@ async function matchData() {
       return { id: elem[0], name: elem[1] };
     });
 
-  let numbers = await (
-    await fsPromises.readFile("./numbers.txt")
-  )
-    .toString()
+  let numbers = await fsPromises.readFile("./numbers.txt");
+    numbers= numbers.toString()
     .split("\r\n")
     .map((elem) => {
       elem = elem.split("-");
